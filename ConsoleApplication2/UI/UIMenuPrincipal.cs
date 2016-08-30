@@ -16,6 +16,11 @@ namespace ConsoleApplication2.UI
             this.Manager = Manager;
         }
 
+        public void Welcometxt()
+        {
+            Console.WriteLine("Welcome...");
+        }
+
         public int FirstMenu()
         {
             int option;

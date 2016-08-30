@@ -13,7 +13,8 @@ namespace ConsoleApplication2.Logic
         public bool AdminPaswordOnOff { get; private set; }
         public static User Admin = new User("admin", "admin", 123, 0, true);
         public static User UserInSesion;
-        
+        public static Account AccInSesion;
+
         #region Methods
 
         public Gestor()
@@ -69,18 +70,18 @@ namespace ConsoleApplication2.Logic
             return null;
         }
 
-        //public Account FindAccById(int clientId, string accId)
-        //{
-        //    User objUser = FindClientById(clientId);
-        //    foreach (Account Acc in objUser.Accounts)
-        //    {
-        //        if (Acc.accId.Equals(accId))
-        //        {
-        //            return Acc;
-        //        }
-        //    }
-        //    return null;
-        //}
+        public Account FindAccById(string accId)
+        {
+            
+            foreach (Account Acc in UserInSesion.Accounts)
+            {
+                if (Acc.accId.Equals(accId))
+                {
+                    return Acc;
+                }
+            }
+            return null;
+        }
 
         public User FindClientByName(string fName, string lName)
         {
@@ -144,7 +145,6 @@ namespace ConsoleApplication2.Logic
             int countAccounts = objUser.Accounts.Count;
             Users.Add(objUser);
             objUser.Accounts.Add(new Account("cta-" + ++countAccounts, pCredit));
-            //PrintUserDetails(objUser);
         }
 
         public void RegisterMethodDemo(string pName, string pLastName, int pUserId, int pPhone)
@@ -153,18 +153,8 @@ namespace ConsoleApplication2.Logic
             int countAccounts = objUser.Accounts.Count;
             Users.Add(objUser);
             objUser.Accounts.Add(new Account("cta-" + ++countAccounts));
-            //PrintUserDetails(objUser);
         }
-
-        //public void PrintUserDetails(User pObjUser)
-        //{
-        //    Console.WriteLine("User: " + pObjUser.Name + " " + pObjUser.LastName + "\nI.D: " + pObjUser.UserId + "\nPhone Number: " + pObjUser.Phone);
-        //    foreach (var account in pObjUser.Accounts)
-        //    {
-        //        Console.WriteLine("Account Id: " + account.accId + ". Account credit: " + account.credit);
-        //    }
-        //}
-
+        
         public void ModifyMethodDemo(int pId, string pName, string pLastName, int pUserId, int pPhone)
         {
             User objUser = FindClientById(pId);
@@ -199,9 +189,9 @@ namespace ConsoleApplication2.Logic
             return false;
         }
 
-        public string GetUserInfo(int Id)
+        public string GetUserInfo(int pId)
         {
-            User x = FindClientById(Id);
+            User x = FindClientById(pId);
             if (x!=null)
             {
                 return x.UserToString();
@@ -212,18 +202,49 @@ namespace ConsoleApplication2.Logic
             }
         }
 
-        public bool ValidateAdminPassword(string InputPassword)
+        public string GetAccInfo(string pId)
         {
-            if(Admin.Password==InputPassword)
+            Account x = FindAccById(pId);
+            if (x != null)
+            {
+                return x.AccToString();
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public string GetAccInSesionInfo()
+        {
+            if (AccInSesion != null)
+            {
+                return AccInSesion.AccToString();
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public string GetAccInSesionBalance()
+        {
+            return AccInSesion.AccBalanceString();
+            
+        }
+
+        public bool ValidateAdminPassword(string pInputPassword)
+        {
+            if(Admin.Password==pInputPassword)
             {
                 return true;
             }
             return false;
         }
 
-        public bool ValidateClientPassword(int ClientID, string ClientPassword)
+        public bool ValidateClientPassword(string pClientPassword)
         { 
-            if (UserInSesion.Password == ClientPassword)
+            if (UserInSesion.Password == pClientPassword)
             {
                 UserInSesion.tries=0;
                 return true;
@@ -240,26 +261,27 @@ namespace ConsoleApplication2.Logic
             return false;
         }
         
-        public bool ValidateAccStatus(int Id)
+        public bool ValidateAccStatus()
         { 
             foreach (Account Acc in UserInSesion.Accounts)
             {
+
                 if (Acc.Blocked == true)
                 {
                     return false;
                 }
             }
             return true; 
+        } 
+
+        public void SetUserInSesion (int pId)
+        {
+            UserInSesion = FindClientById(pId); 
         }
 
-        public void WithdrawMoney(int acc, double Amount)
+        public void SetAccInSesion(string pId)
         {
-            UserInSesion.Accounts[acc].Withdraw(Amount);
-        }
-
-        public void SetUserInSesion (int Id)
-        {
-            UserInSesion = FindClientById(Id); 
+            AccInSesion = FindAccById(pId);
         }
 
         public void DisableAdmin()
@@ -276,5 +298,50 @@ namespace ConsoleApplication2.Logic
             return false;
         }
 
+        public double WithdrawMoney( double pAmount)
+        {
+            if (AccInSesion.Withdraw(pAmount))
+            {
+                return pAmount;
+            }
+            return 0;
+        }
+
+        public void BuyArticle(double pAmount)
+        {
+            AccInSesion.Buy(pAmount); 
+        }
+
+        public double PaymentCc(double pAmount)
+        {
+            if (AccInSesion.PayCc(pAmount))
+            {
+                return pAmount;
+            }
+            return 0;
+        }
+
+        public string TxtTransactions()
+        {
+            string txtTransactions="";
+            foreach (Transaction Trnsctn in AccInSesion.Transactions)
+            {
+                
+                txtTransactions+= Trnsctn.TransactionToString();
+                
+            }
+            return txtTransactions;
+        } 
+
+        public bool PasswordChange(string pPw1, string pPw2)
+        {
+            if (pPw1 == pPw2)
+            {
+                UserInSesion.ChangePassword(pPw2);
+                return true;
+            }
+            return false;
+        }
+  
     }
 }

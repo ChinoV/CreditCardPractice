@@ -39,3 +39,9 @@ C:\Users\Alfredo V\Documents\GitHub\CreditCardPractice\ConsoleApplication2\bin\D
 C:\Users\Alfredo V\Documents\GitHub\CreditCardPractice\ConsoleApplication2\bin\Debug\ConsoleApplication2.pdb
 C:\Users\Alfredo V\Documents\GitHub\CreditCardPractice\ConsoleApplication2\obj\Debug\ConsoleApplication2.exe
 C:\Users\Alfredo V\Documents\GitHub\CreditCardPractice\ConsoleApplication2\obj\Debug\ConsoleApplication2.pdb
+C:\Users\Alfredo\Documents\GitHub\CreditCardPractice\ConsoleApplication2\bin\Debug\ConsoleApplication2.exe.config
+C:\Users\Alfredo\Documents\GitHub\CreditCardPractice\ConsoleApplication2\obj\Debug\ConsoleApplication2.exe
+C:\Users\Alfredo\Documents\GitHub\CreditCardPractice\ConsoleApplication2\obj\Debug\ConsoleApplication2.pdb
+C:\Users\Alfredo\Documents\GitHub\CreditCardPractice\ConsoleApplication2\bin\Debug\ConsoleApplication2.exe
+C:\Users\Alfredo\Documents\GitHub\CreditCardPractice\ConsoleApplication2\bin\Debug\ConsoleApplication2.pdb
+C:\Users\Alfredo\Documents\GitHub\CreditCardPractice\ConsoleApplication2\obj\Debug\ConsoleApplication2.csprojResolveAssemblyReference.cache

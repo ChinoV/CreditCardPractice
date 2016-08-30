@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\DB.cs" />
     <Compile Include="Logic\Account.cs" />
     <Compile Include="Logic\Gestor.cs" />
     <Compile Include="Logic\Transaction.cs" />

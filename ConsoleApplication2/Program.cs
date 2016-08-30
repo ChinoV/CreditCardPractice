@@ -12,26 +12,25 @@ namespace ConsoleApplication2
     {
         static void Main(string[] args)
         {
+            //MenuP.MenuPrincipal(-1);
             Gestor objGestor = new Gestor();
             UIMenuPrincipal MenuP = new UIMenuPrincipal(objGestor);
             UIMenuAcc MenuA = new UIMenuAcc();
-            
 
-            //MenuP.MenuPrincipal(-1);
+            MenuP.Welcometxt();
+            
             int option = 0;
             do
             {
+
+            #region PrimaryMenu
                 option = MenuP.FirstMenu();
                 if (option > 0 && option < 6)
                 {
                     if (objGestor.ValidateAdminStatus())
                     {
-                        while (objGestor.ValidateAdminPassword(MenuP.AdminPasswordRequestDemo()) != true) { } 
+                        while (objGestor.ValidateAdminPassword(MenuP.AdminPasswordRequestDemo()) != true) { }
                     }
-                    //if (objGestor.ValidateAdminPassword(MenuP.AdminPasswordRequestDemo()))
-                    //{
-                    //do
-                    //{
                     switch (option)
                     {
                         case 1:
@@ -59,93 +58,133 @@ namespace ConsoleApplication2
                                 {
                                     objGestor.AddAccountDemo(int.Parse(rValues[0]), double.Parse(rValues[4]));
                                 }
-                                           
+
                             }
 
                             MenuP.DisplayUserInfoDemo(objGestor.GetUserInfo(int.Parse(rValues[0])));
 
-                                break;
+                            break;
 
-                                    case 2:
+                        case 2:
 
-                                        int UserId = MenuP.GetUserIdDemo();
-                                        if (objGestor.ClientExists(UserId))
-                                        {
-                                            var mValues = MenuP.ModifyDemo();
-                                            objGestor.ModifyMethodDemo(UserId, mValues[1], mValues[2], int.Parse(mValues[0]), int.Parse(mValues[3]));
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("No user found with that I.D.");
-                                        }
-                                        break;
+                            int UserId = MenuP.GetUserIdDemo();
+                            if (objGestor.ClientExists(UserId))
+                            {
+                                var mValues = MenuP.ModifyDemo();
+                                objGestor.ModifyMethodDemo(UserId, mValues[1], mValues[2], int.Parse(mValues[0]), int.Parse(mValues[3]));
+                            }
+                            else
+                            {
+                                Console.WriteLine("No user found with that I.D.");
+                            }
+                            break;
 
-                                    case 3:
-                                        MenuP.DisplayUserInfoDemo(objGestor.GetUserInfo(MenuP.GetUserIdDemo()));
-                                        break;
+                        case 3:
+                            MenuP.DisplayUserInfoDemo(objGestor.GetUserInfo(MenuP.GetUserIdDemo()));
+                            break;
 
-                                    case 4:
-                                        objGestor.DisableAdmin();
-                                        Console.WriteLine("admin password disabled");
+                        case 4:
+                            objGestor.DisableAdmin();
+                            Console.WriteLine("admin password disabled");
 
-                                        break;
+                            break;
 
-                                    case 5:
-                                        int UserId2 = MenuP.GetUserIdDemo();
-                                        objGestor.UnblockClientAccs(UserId2);
-                                        break;
+                        case 5:
+                            int UserId2 = MenuP.GetUserIdDemo();
+                            objGestor.UnblockClientAccs(UserId2);
+                            break;
 
-                                    default:
-                                        Console.WriteLine("Invalid Option");
-                                        break;
-                                }
-                            //} while (objGestor.ValidateAdminStatus()==false);
-                        //}
-                        //else
-                        //{
-                        //    MenuP.WrongPasswordDemo();
-                        //}
+                        default:
+                            Console.WriteLine("Invalid Option");
+                            break;
+                    }
+
                 }
+                #endregion
 
+            #region 2ndMenu
                 switch (option)
                 {
                     case 6:
                         int ClientId = MenuA.RequestClientId();
                         objGestor.SetUserInSesion(ClientId);
-                        if (objGestor.ClientExists(ClientId) && objGestor.ValidateAccStatus(ClientId) && objGestor.ValidateClientPassword(ClientId, MenuA.ClientPasswordRequestDemo()))
-                        {
-                            option = MenuA.MenuAccDemo();
-                            switch (option)
+                        
+                                if (objGestor.ClientExists(ClientId) && objGestor.ValidateAccStatus() && objGestor.ValidateClientPassword(MenuA.ClientPasswordRequestDemo()))
                             {
+                                objGestor.SetAccInSesion(MenuA.RequestAccId());
+                                do
+                                {
+                                    option = MenuA.MenuAccDemo();
+                            
+                                    switch (option)
+                                    {
 
-                                case 1:
+                                        case 1:
+                                            //1: to Withdraw Money
+                                            MenuA.DisplayAmountWithdrawn(objGestor.WithdrawMoney(MenuA.RequestAmount()));
+                                            MenuA.DisplayAccInfo(objGestor.GetAccInSesionInfo());
 
-                                    //objGestor.WithdrawMoney();
-                                    break;
-                                case 2:
+                                            break;
+                                        case 2:
 
-                                    //2: to Pay your credit card
-                                    break;
-                                case 3:
+                                        //2: to Pay your credit card
+                                        while (MenuA.DisplayAmountPayed(objGestor.PaymentCc(MenuA.RequestAmount())) == 0)
+                                        {
+                                            MenuA.PrintCcPaymentErrorTxt();
+                                        }
 
-                                    //3: to buy an article 
-                                    break;
-                                case 4:
+                                            MenuA.DisplayAccInfo(objGestor.GetAccInSesionInfo());
 
-                                    //4: to check your balance 
-                                    break;
-                                case 5:
 
-                                    //5: to check your Transactions\n6: To change your pin\n Press 0 to exit
-                                    break;
+                                            break;
+                                        case 3:
+
+                                            //3: to Buy an article
+                                            objGestor.BuyArticle(MenuA.RequestAmount());
+                                            MenuA.DisplayAccInfo(objGestor.GetAccInSesionInfo());
+
+                                            break;
+                                        case 4: 
+                                            //4: to check acc Balance
+                                            MenuA.DisplayAccInfo(objGestor.GetAccInSesionBalance());
+
+                                            break;
+                                        case 5:
+
+                                            //5: to check your Transactions
+                                            MenuA.DisplayTransactions(objGestor.TxtTransactions());
+                                            
+                                            break;
+                                    case 6:
+
+                                        //6: To change your pin
+                                        if (objGestor.ValidateClientPassword(MenuA.ClientPasswordRequestDemo()))
+                                        {
+                                            do
+                                            {
+
+                                            } while (objGestor.PasswordChange(MenuA.RequestNewPassword(), MenuA.RequestNewPassword2()) == false);
+                                        }
+
+                                        break;
+                                    default:
+
+                                        Console.WriteLine("Invalid Option");
+
+                                        break;
+                                    }
+                                } while (option != 7);
+                            
                             }
-                        }
-                        else
-                        {
-                            MenuA.PrintErrorTxt();
-                        }
+                            else
+                            {
+                                MenuA.PrintAccessErrorTxt();
+                            }
+                        
                         break;
                 }
+                #endregion
+
             } while (option != 7) ;
         }
     }
