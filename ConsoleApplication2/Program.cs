@@ -27,14 +27,20 @@ namespace ConsoleApplication2
                 option = MenuP.FirstMenu();
                 if (option > 0 && option < 6)
                 {
-                    if (objGestor.ValidateAdminStatus())
-                    {
-                        while (objGestor.ValidateAdminPassword(MenuP.AdminPasswordRequestDemo()) != true) { }
-                    }
+                    
+                    //if (objGestor.ValidateAdminStatus())
+                    //{
+                    //    bool result = false;
+                    //    do
+                    //    {
+                    //        result = objGestor.ValidateAdminPassword(MenuP.AdminPasswordRequestDemo());
+                    //    }
+                    //    while (result == true);
+                    //}
                     switch (option)
                     {
                         case 1:
-
+                            AdminPassword(objGestor, MenuP);
                             var rValues = MenuP.RegisterDemo2();
                             if (objGestor.ClientExists(int.Parse(rValues[0])) == false)
                             {
@@ -66,7 +72,7 @@ namespace ConsoleApplication2
                             break;
 
                         case 2:
-
+                            AdminPassword(objGestor, MenuP);
                             int UserId = MenuP.GetUserIdDemo();
                             if (objGestor.ClientExists(UserId))
                             {
@@ -80,16 +86,19 @@ namespace ConsoleApplication2
                             break;
 
                         case 3:
+                            AdminPassword(objGestor, MenuP);
                             MenuP.DisplayUserInfoDemo(objGestor.GetUserInfo(MenuP.GetUserIdDemo()));
                             break;
 
                         case 4:
+                            AdminPassword(objGestor, MenuP);
                             objGestor.DisableAdmin();
                             Console.WriteLine("admin password disabled");
 
                             break;
 
                         case 5:
+                            AdminPassword(objGestor, MenuP);
                             int UserId2 = MenuP.GetUserIdDemo();
                             objGestor.UnblockClientAccs(UserId2);
                             break;
@@ -103,6 +112,7 @@ namespace ConsoleApplication2
                 #endregion
 
             #region 2ndMenu
+                
                 switch (option)
                 {
                     case 6:
@@ -140,7 +150,7 @@ namespace ConsoleApplication2
                                         case 3:
 
                                             //3: to Buy an article
-                                            objGestor.BuyArticle(MenuA.RequestAmount());
+                                            objGestor.BuyArticle(MenuA.RequestAmountsToBuy());
                                             MenuA.DisplayAccInfo(objGestor.GetAccInSesionInfo());
 
                                             break;
@@ -187,6 +197,23 @@ namespace ConsoleApplication2
 
             } while (option != 7) ;
         }
+        public static void AdminPassword(Gestor pObjGestor, UIMenuPrincipal pMenuP)
+        {
+            if (pObjGestor.ValidateAdminStatus())
+            {
+                bool result;
+                do
+                {
+                    result = pObjGestor.ValidateAdminPassword(pMenuP.AdminPasswordRequestDemo());
+                }
+                while (result == false);
+            }
+        }
+
+        //public static void 2ndMenu()
+        //{
+
+        //}
     }
 }
 

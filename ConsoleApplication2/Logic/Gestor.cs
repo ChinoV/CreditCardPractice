@@ -307,9 +307,9 @@ namespace ConsoleApplication2.Logic
             return 0;
         }
 
-        public void BuyArticle(double pAmount)
+        public void BuyArticle(List<double> Amounts)
         {
-            AccInSesion.Buy(pAmount); 
+            AccInSesion.Buy(Amounts); 
         }
 
         public double PaymentCc(double pAmount)

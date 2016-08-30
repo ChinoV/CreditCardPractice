@@ -112,7 +112,20 @@ namespace ConsoleApplication2.UI
             Console.WriteLine("Invalid amount");
         }
 
-
+        public List<double> RequestAmountsToBuy()
+        {
+            List<double> values = new List<double>(5);
+            int option;
+            do {
+                Console.WriteLine("\nType in Amount:");
+                double value;
+                double.TryParse(Console.ReadLine().ToString(), out value);
+                values.Add(value);
+                Console.WriteLine("\nPress 7 to end or enter to keep adding amounts.");
+                int.TryParse(Console.ReadLine().ToString(), out option);
+            } while (option!=7);
+            return values;
+        }
 
         //public void MenuAcc(int UserType)
         //{

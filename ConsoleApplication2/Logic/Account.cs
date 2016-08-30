@@ -73,14 +73,16 @@ namespace ConsoleApplication2.Logic
 
 
 
-        public void Buy (double Amount)
+        public void Buy (List<double>Amounts)
         {
-            if (Amount <= balanceAvailable)
+            double total = Amounts.Sum();
+
+            if (total <= balanceAvailable)
             {
                 int countTransactions = Transactions.Count;
-                this.balanceDue += Amount;
-                this.balanceAvailable -= Amount;
-                Transactions.Add(new Transaction("Purchase", Amount, ++countTransactions));
+                this.balanceDue += total;
+                this.balanceAvailable = credit - balanceDue;
+                Transactions.Add(new Transaction("Purchase", total, ++countTransactions));
             }
         }
         public bool Withdraw(double Amount)
@@ -103,18 +105,20 @@ namespace ConsoleApplication2.Logic
             if(balanceDue>=5000 && Amount>=5000 && Amount <= balanceDue)
             {
                 this.balanceDue -= Amount;
-                this.balanceAvailable += Amount;
+                this.balanceAvailable = credit - balanceDue;
                 Transactions.Add(new Transaction("Credit Card Payment", Amount, ++countTransactions));
                 if (balanceDue!=0)
                 {
-                    balanceDue += 5* balanceDue / 100;
+                    this.balanceAvailable -= 5 * balanceDue / 100;
+                    this.balanceDue += 5* balanceDue / 100;
+                    
                 }
                 return true;
             }
             else if (balanceDue < 5000 && Amount == balanceDue)
             {
                 this.balanceDue -= Amount;
-                this.balanceAvailable += Amount;
+                this.balanceAvailable = credit - balanceDue;
                 Transactions.Add(new Transaction("Credit Card Payment", Amount, ++countTransactions));
                 return true;
             }
