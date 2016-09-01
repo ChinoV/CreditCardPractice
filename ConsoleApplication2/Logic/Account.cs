@@ -105,13 +105,11 @@ namespace ConsoleApplication2.Logic
             if(balanceDue>=5000 && Amount>=5000 && Amount <= balanceDue)
             {
                 this.balanceDue -= Amount;
-                this.balanceAvailable = credit - balanceDue;
+                this.balanceAvailable += Amount;
                 Transactions.Add(new Transaction("Credit Card Payment", Amount, ++countTransactions));
                 if (balanceDue!=0)
                 {
-                    this.balanceAvailable -= 5 * balanceDue / 100;
                     this.balanceDue += 5* balanceDue / 100;
-                    
                 }
                 return true;
             }

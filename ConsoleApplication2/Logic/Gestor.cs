@@ -144,16 +144,24 @@ namespace ConsoleApplication2.Logic
             User objUser = new User(pName, pLastName, pUserId, pPhone, false);
             int countAccounts = objUser.Accounts.Count;
             Users.Add(objUser);
-            objUser.Accounts.Add(new Account("cta-" + ++countAccounts, pCredit));
+            if (pCredit == -1)
+            {
+                objUser.Accounts.Add(new Account("cta-" + ++countAccounts));
+            }
+            else
+            {
+                objUser.Accounts.Add(new Account("cta-" + ++countAccounts, pCredit));
+            }
+            
         }
 
-        public void RegisterMethodDemo(string pName, string pLastName, int pUserId, int pPhone)
-        {
-            User objUser = new User(pName, pLastName, pUserId, pPhone, false);
-            int countAccounts = objUser.Accounts.Count;
-            Users.Add(objUser);
-            objUser.Accounts.Add(new Account("cta-" + ++countAccounts));
-        }
+        //public void RegisterMethodDemo(string pName, string pLastName, int pUserId, int pPhone)
+        //{
+        //    User objUser = new User(pName, pLastName, pUserId, pPhone, false);
+        //    int countAccounts = objUser.Accounts.Count;
+        //    Users.Add(objUser);
+        //    objUser.Accounts.Add(new Account("cta-" + ++countAccounts));
+        //}
         
         public void ModifyMethodDemo(int pId, string pName, string pLastName, int pUserId, int pPhone)
         {
@@ -162,6 +170,7 @@ namespace ConsoleApplication2.Logic
             objUser.LastName = pLastName;
             objUser.UserId = pUserId;
             objUser.Phone = pPhone;
+            objUser.Password = PasswordGenerator(pName, pLastName, pUserId);
         }
 
         public void AddAccountDemo(int pId, double pCredit)
@@ -191,10 +200,10 @@ namespace ConsoleApplication2.Logic
 
         public string GetUserInfo(int pId)
         {
-            User x = FindClientById(pId);
-            if (x!=null)
+            User objUser = FindClientById(pId);
+            if (objUser!=null)
             {
-                return x.UserToString();
+                return objUser.UserToString();
             }
             else
             {
@@ -204,10 +213,10 @@ namespace ConsoleApplication2.Logic
 
         public string GetAccInfo(string pId)
         {
-            Account x = FindAccById(pId);
-            if (x != null)
+            Account objAcc = FindAccById(pId);
+            if (objAcc != null)
             {
-                return x.AccToString();
+                return objAcc.AccToString();
             }
             else
             {

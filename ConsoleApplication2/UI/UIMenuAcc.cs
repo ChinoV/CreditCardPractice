@@ -12,7 +12,7 @@ namespace ConsoleApplication2.UI
         {
             int option;
             Console.WriteLine("\nAccount's Menu\nPress \n1: to Withdraw money \n2: to Pay your credit card \n3: to buy an article \n4: to check your balance \n"
-                              + "5: to check your Transactions\n6: To change your pin\n 7: to exit.\n");
+                              + "5: to check your Transactions\n6: To change your pin\n7: to exit.\n");
             int.TryParse(Console.ReadKey().KeyChar.ToString(), out option);
             return option;
 

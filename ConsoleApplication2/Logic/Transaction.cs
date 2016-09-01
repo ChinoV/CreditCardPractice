@@ -24,7 +24,6 @@ namespace ConsoleApplication2.Logic
         public string TransactionToString()
         {
             string transaction = "\n"+transactionId + " " +Date + " " + Type + " " + Amount;
-             
             return transaction;
         }
     }
